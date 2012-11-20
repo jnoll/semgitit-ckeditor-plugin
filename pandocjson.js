@@ -94,7 +94,7 @@ if (!PandocJSON) {
 	//console.warn('listToHTML: [object Array] of length ' + length.toString());
 	for (i = 0; i < length; i += 1) {
 	    //console.warn('listToHTML: processing element ' + i + ' of ' + length);
-	    partial[i] = '<li>' + toHTML(value[i]) + '</li>\n';
+	    partial[i] = '<li>' + toHTML(value[i]) + '</li>';
 	}
 	// Join all of the member texts together, without separator
 	// (Pandoc already provides spaces when necessary).
@@ -104,7 +104,7 @@ if (!PandocJSON) {
     function stringToHTML(value) {
 	switch (value) {
 	case 'Space': return ' ';
-	case 'LineBreak': return '<br/>\n';
+	case 'LineBreak': return '<br/>';
 	default: return value;
 	}
     }
@@ -120,7 +120,7 @@ if (!PandocJSON) {
 	    rows = value[4];
 	
 	if (colheads.length) {
-	    result[k++]= '<thead>\n<tr>';
+	    result[k++]= '<thead><tr>';
 	    for (j = 0; j < colheads.length; j++) {
 		var alignment = '';
 		switch (align[j]) {
@@ -129,9 +129,9 @@ if (!PandocJSON) {
 		case 'AlignCenter': alignment = 'center'; break;
 		case 'AlignDefault': alignment = 'default'; break;
 		}
-		result[k++] = '<th align="' + alignment + '">' + toHTML(colheads[j]) + '</th>\n';
+		result[k++] = '<th align="' + alignment + '">' + toHTML(colheads[j]) + '</th>';
 	    }
-	    result[k++] = '</tr>\n</thead>\n<tbody>\n';
+	    result[k++] = '</tr></thead><tbody>';
 	}
 
 	for (i = 0; i < rows.length; i++) {
@@ -140,7 +140,7 @@ if (!PandocJSON) {
 	    for (j = 0; j < row.length; j++) {
 		result[k++] = '<td>' + toHTML(row[j]) + '</td>';
 	    }
-	    result[k++] = '</tr>\n';
+	    result[k++] = '</tr>';
 	}
 	result[k++] = '</tbody>';
 
@@ -151,46 +151,46 @@ if (!PandocJSON) {
 
 	switch (key) {
 	case 'Str': return value;
-	case 'Para': return '<p>' + toHTML(value) + '</p>\n';
+	case 'Para': return '<p>' + toHTML(value) + '</p>';
 
-	case 'BlockQuote': return '<quote>\n' + toHTML(value) + '\n</quote>\n';
+	case 'BlockQuote': return '<quote>' + toHTML(value) + '</quote>';
 	    // XXX Need to add code class attribute.
-	case 'CodeBlock': return '<pre>\n' + toHTML(value) + '\n</pre>\n';
+	case 'CodeBlock': return '<pre>' + toHTML(value) + '</pre>';
 	    // Plain denotes a list item that is not a paragraph.
 
-	case 'Plain' : return  toHTML(value) + '\n';
+	case 'Plain' : return  toHTML(value) + '';
 
-	case 'Strong' : return  '<strong>' + toHTML(value) + '</strong>\n';
+	case 'Strong' : return  '<strong>' + toHTML(value) + '</strong>';
 
-	case 'Emph' : return  '<em>' + toHTML(value) + '</em>\n';
+	case 'Emph' : return  '<em>' + toHTML(value) + '</em>';
 
-	case 'Strikeout' : return  '<del>' + toHTML(value) + '</del>\n';
+	case 'Strikeout' : return  '<del>' + toHTML(value) + '</del>';
 
-	case 'Superscript' : return  '<sup>' + toHTML(value) + '</sup>\n';
+	case 'Superscript' : return  '<sup>' + toHTML(value) + '</sup>';
 
-	case 'Subscript' : return  '<sub>' + toHTML(value) + '</sub>\n';
+	case 'Subscript' : return  '<sub>' + toHTML(value) + '</sub>';
 
 
 	case 'Code' : 
 	    var attr = value[0];	// XXX the class tag appears in the
 	    // middle element; not sure what the
 	    // others are for.
-	    return '<code class="sourceCode ' + attr[1] + '">' + toHTML(value[1]) + '</code>\n';
+	    return '<code class="sourceCode ' + attr[1] + '">' + toHTML(value[1]) + '</code>';
 
 	    // XXX Ugh, the first item is the list specification, then
 	    // comes the list array. 
 
-	case 'OrderedList': return '<ol>\n' + listToHTML(value[1]) + '</ol>\n';
-	case 'BulletList':  return '<ul>\n' + listToHTML(value) + '</ul>\n';
+	case 'OrderedList': return '<ol>' + listToHTML(value[1]) + '</ol>';
+	case 'BulletList':  return '<ul>' + listToHTML(value) + '</ul>';
 	    // XXX Ugh, already a complication: value will have the
 	    // level as part of the string.
 
 	case 'Header': 
 	    // header value is a two element array: [level, text]
 	    var level = value[0];
-	    return '<h' + level + '>' + toHTML(value[1]) + '</h' + level + '>\n';
+	    return '<h' + level + '>' + toHTML(value[1]) + '</h' + level + '>';
 
-	case 'Table' : return '<table>' + tableToHTML(value) + '</table>\n';
+	case 'Table' : return '<table>' + tableToHTML(value) + '</table>';
 	default: 
 	    //console.warn('kvToHTML: key is ' + key);
 	    return toHTML(value);
