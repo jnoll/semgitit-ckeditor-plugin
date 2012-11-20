@@ -1,0 +1,31 @@
+Header 1 underlined
+===================
+
+# Header 1 hashed
+
+# Header 1a hashed #
+
+Header 2 underlined
+-------------------
+
+## Header 2 hashed
+
+## Header 2a hashed ##
+
+### Header 3
+
+### Header 3a ###
+
+
+#### Header 4
+
+#### Header 4a ####
+
+##### Header 5
+
+##### Header 5a #####
+
+###### Header 6
+
+###### Header 6a ######
+

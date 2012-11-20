@@ -1,0 +1,9 @@
+![la lune](lalune.jpg "Voyage to the moon")
+
+![movie reel]
+
+[movie reel]: movie.gif
+
+![This is the caption of a figure](/url/of/image.png)
+
+![This image won't be a figure](/url/of/image.png)\ 

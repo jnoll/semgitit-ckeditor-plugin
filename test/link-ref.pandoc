@@ -1,0 +1,25 @@
+[my label 1]: /foo/bar.html  "My title, optional"
+[my label 2]: /foo
+[my label 3]: http://fsf.org (The free software foundation)
+[my label 4]: /bar#special  'A title in single quotes'
+
+The URL may optionally be surrounded by angle brackets:
+
+[my label 5]: <http://foo.bar.baz>
+
+The title may go on the next line:
+
+[my label 3]: http://fsf.org
+  "The free software foundation"
+
+Note that link labels are not case sensitive. So, this will work:
+
+Here is [my link][FOO]
+
+[Foo]: /bar/baz
+
+In an implicit reference link, the second pair of brackets is empty, or omitted entirely:
+
+See [my website][], or [my website].
+
+[my website]: http://foo.bar.baz

@@ -1,0 +1,13 @@
+* item 1
+
+  Item 1, paragraph.
+
+* item 2
+
+  Item 2, paragraph.
+  
+* item 3
+
+        indented (line 1)
+	code	 (line 2)
+	block	 (line 3)

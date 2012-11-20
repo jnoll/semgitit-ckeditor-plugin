@@ -1,0 +1,15 @@
+% Table test
+
+# A Table
+
+So the goal is to have the latex code passed through unaffected.
+
+\begin{tabular}{lll}
+  Key User & How Used & Benefit \\
+\hrule
+Programmer & Advice & Easy search \\
+Contributor & Solve problems & Reputation \\
+\end{tabular}
+
+And?
+

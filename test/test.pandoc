@@ -1,0 +1,428 @@
+% (Title) Pandoc Test Input
+% (Author) John Noll
+# (Date) Saturday, September 01 2012  23:18
+
+# (h1) Level 1 Heading
+
+Line one.
+Line two.
+Line three.
+
+## (h2) Level 2 Heading with _emphasized text_
+
+(h1) Level 1 Heading (alt syntax)
+=================================
+
+(h2) Level 2 Heading (alt syntax)
+---------------------------------
+
+Line with hard newline.  
+This text starts a new line.
+Another line with hard newline.\
+This text also starts  a new line.
+
+> (pre) This is a block quote. This
+> paragraph has two lines.
+>
+> 1. This is a list inside a block quote.
+> 2. Second item.
+
+> (pre)  This is also a (lazy) block quote. This
+paragraph has two lines.
+
+> 1. This is a list inside a block quote.
+2. Second item.
+
+> This is a block quote.
+>
+> > A block quote within a block quote.
+
+    (pre) indented code block
+    if (a > 3) {
+      moveShip(5 * gravity, DOWN);
+    }
+
+
+~~~~~~~
+(pre) fenced code block
+if (a > 3) {
+  moveShip(5 * gravity, DOWN);
+}
+~~~~~~~
+
+``` {.haskell}
+(pre) fenced code block with language specifier (.haskell)
+qsort [] = []
+```
+
+* itemized
+* list
+* last item
+
+* itemized
+
+* list with 
+
+* blank lines
+
+
+A list item may contain multiple paragraphs and other block-level content. 
+
+  * First paragraph.
+
+    Continued.
+
+  * Second paragraph. With a code block, which must be indented
+    eight spaces:
+
+        { code }
+
+List items may include other lists. In this case the preceding blank
+line is optional. The nested list must be indented four spaces or one
+tab:
+
+* fruits
+    + apples
+        - macintosh
+        - red delicious
+    + pears
+    + peaches
+* vegetables
+    + brocolli
+    + chard
+
+As noted above, markdown allows you to write list items “lazily,” instead of indenting continuation lines. 
+
++ A lazy, lazy, list
+item.
+
++ Another one; this looks
+bad but is legal.
+
+    Second paragraph of second
+list item.
+
+
+## (h2) Ordered Lists ##
+
+1.  one
+2.  two
+3.  three
+
+The following yields a list with numbers followed by a single
+parenthesis, starting with 9, and a sublist with lowercase roman
+numerals:
+
+ 9)  Ninth
+10)  Tenth
+11)  Eleventh
+       i. subone
+      ii. subtwo
+     iii. subthree
+
+So, the following will create three lists:
+
+(2) Two
+(5) Three
+1.  Four
+*   Five
+
+If default list markers are desired, use #.:
+
+#.  one
+#.  two
+#.  three
+
+## (h2) Definition lists
+
+
+Term 1
+
+:   Definition 1
+
+Term 2 with *inline markup*
+
+:   Definition 2
+
+        { some code, part of Definition 2 }
+
+    Third paragraph of definition 2.
+
+Compact form.
+
+Term 1
+  ~ Definition 1
+Term 2
+  ~ Definition 2a
+  ~ Definition 2b
+
+## (h2) Numbered example lists
+
+
+(@)  My first example will be numbered (1).
+(@)  My second example will be numbered (2).
+
+Explanation of examples.
+
+(@)  My third example will be numbered (3).
+
+Numbered examples can be labeled and referred to elsewhere in the document:
+
+(@good)  This is a good example.
+
+As (@good) illustrates, ...
+
+Pandoc transforms this into a “compact list” (with no <p> tags around
+“First”, “Second”, or “Third”):
+
++   First
++   Second:
+    -   Fee
+    -   Fie
+    -   Foe
+
++   Third
+
+To “cut off” the list after item two, you can insert some non-indented
+content, like an HTML comment, which won’t produce visible output in
+any format:
+
+-   item one
+-   item two
+
+<!-- end of list -->
+
+    { my code block }
+
+You can use the same trick if you want two consecutive lists instead
+of one big list:
+
+
+1.  one
+2.  two
+3.  three
+
+<!-- -->
+
+1.  uno
+2.  dos
+3.  tres
+
+
+## (h2) Horizontal rules
+
+*  *  *  *
+
+---------------
+
+# (h1) Tables!
+
+Simple tables look like this:
+
+  Right     Left     Center     Default
+-------     ------ ----------   -------
+     12     12        12            12
+    123     123       123          123
+      1     1          1             1
+
+Table:  (caption) Demonstration of simple table syntax.
+
+The column headers may be omitted, provided a dashed line is used to
+end the table. For example: 
+
+-------     ------ ----------   -------
+     12     12        12             12
+    123     123       123           123
+      1     1          1              1
+-------     ------ ----------   -------
+
+Table: (caption) No column headers.
+
+-------------------------------------------------------------
+ Centered   Default           Right Left
+  Header    Aligned         Aligned Aligned
+----------- ------- --------------- -------------------------
+   First    row                12.0 Example of a row that
+                                    spans multiple lines.
+
+  Second    row                 5.0 Here's another one. Note
+                                    the blank line between
+                                    rows.
+-------------------------------------------------------------
+
+Table: Here's the caption. It, too, may span
+multiple lines.
+
+
+----------- ------- --------------- -------------------------
+   First    row                12.0 Example of a row that
+                                    spans multiple lines.
+
+  Second    row                 5.0 Here's another one. Note
+                                    the blank line between
+                                    rows.
+-------------------------------------------------------------
+
+: (caption) Here's a multiline table without headers.
+
+
+### (h3) Grid tables 
+
+Look like this:
+
+: Sample grid table.
+
++---------------+---------------+--------------------+
+| Fruit         | Price         | Advantages         |
++===============+===============+====================+
+| Bananas       | $1.34         | - built-in wrapper |
+|               |               | - bright color     |
++---------------+---------------+--------------------+
+| Oranges       | $2.10         | - cures scurvy     |
+|               |               | - tasty            |
++---------------+---------------+--------------------+
+
+## (h2) Inline markup
+
+**bold**
+
+__also bold__
+
+_italic_
+
+*also italic*
+
+~~strikeout~~
+
+*\*backslash escaped\**
+
+text^superscript, as in 2^10 is 1024.
+
+text~subscript, as in H~2~O is water.
+
+Inline `verbatim text` rest of sentence.
+
+This `verbatim text`{.haskell} has a haskell class attribute.
+
+
+## (h2) Raw HTML
+
+with embedded markdown:
+
+<table>
+    <tr>
+        <td>*emphasized*</td>
+        <td>[a link](http://google.com)</td>
+    </tr>
+</table>
+
+## (h2) Raw LaTeX
+
+This sentence has a citation \cite{citation-needed}.
+
+
+Here is a latex table:
+
+\begin{tabular}{|l|l|}\hline
+Age & Frequency \\ \hline
+18--25  & 15 \\
+26--35  & 33 \\ 
+36--45  & 22 \\ \hline
+\end{tabular}
+
+Here is some latex math inline: $\tuple{a, b, c}$.
+
+## (h2) Links
+
+Automatic links:
+
+<http://google.com>
+<sam@green.eggs.ham>
+
+ 
+This is an [inline link](/url), and here's [one with
+a title](http://fsf.org "click here for a good time!").
+
+### (h3) Reference links
+
+Here are some examples:
+
+[my label 1]: /foo/bar.html  "My title, optional"
+[my label 2]: /foo
+[my label 3]: http://fsf.org (The free software foundation)
+[my label 4]: /bar#special  'A title in single quotes'
+
+The URL may optionally be surrounded by angle brackets:
+
+[my label 5]: <http://foo.bar.baz>
+
+The title may go on the next line:
+
+[my label 3]: http://fsf.org
+  "The free software foundation"
+
+Note that link labels are not case sensitive. So, this will work:
+
+Here is [my link][FOO]
+
+[Foo]: /bar/baz
+
+In an implicit reference link, the second pair of brackets is empty, or omitted entirely:
+
+See [my website][], or [my website].
+
+[my website]: http://foo.bar.baz
+
+
+## (h2) Images
+
+![la lune](lalune.jpg "Voyage to the moon")
+
+![movie reel]
+
+[movie reel]: movie.gif
+
+![This is the caption of a figure](/url/of/image.png)
+
+![This image won't be a figure](/url/of/image.png)\ 
+
+## (h2) Footnotes
+
+Here is a footnote reference,[^1] and another.[^longnote]
+
+[^1]: Here is the footnote.
+
+[^longnote]: Here's one with multiple blocks.
+
+    Subsequent paragraphs are indented to show that they 
+belong to the previous footnote.
+
+        { some.code }
+
+    The whole paragraph can be indented, or just the first
+    line.  In this way, multi-paragraph footnotes work like
+    multi-paragraph list items.
+
+This paragraph won't be part of the note, because it
+isn't indented.
+
+Here is an inline note.^[Inlines notes are easier to write, since
+you don't have to pick an identifier and move down to type the
+note.]
+
+## (h2) Citations
+
+Blah blah [see @doe99, pp. 33-35; also @smith04, ch. 1].
+
+Blah blah [@doe99, pp. 33-35, 38-39 and *passim*].
+
+Blah blah [@smith04; @doe99].
+
+Smith says blah [-@smith04], cited without name.
+
+
+You can also write an in-text citation, as follows:
+
+@smith04 says blah.
+
+@smith04 [p. 33] says blah.

@@ -1,0 +1,114 @@
+# Monday, November 19 2012  01:03 - pandoc html roundtrip fail
+
+It turns out there are a number of problems with using html as the
+interchange format between CKEditor and Pandoc:
+
+1. Pandoc doesn't pass LaTeX through to HTML.
+2. Pandoc parses LaTeX in HTML as text, escaping '\' and other things
+(?) that would make LaTeX hiccup if it tried to compile.
+
+As such, the best option appears to be JSON:
+
+1. Pandoc passes *everything* through to JSON, including LaTeX in
+Markdown.
+2. Coming back, CKEditor's *toDataFormat* method could strip out
+anything egregious, preventing hacks and corruption.
+
+So, all that work creating a JSON *toHtml*  method wasn't wasted after
+all.  Yay!
+
+## Test/Proof of Concept
+
+1. load
+<http://localhost/~jnoll/test/ckeditor-3.6.4/_samples/tscript.html> 
+or 
+<http://localhost/~jnoll/test/ckeditor-3.6.4/_samples/pandoc.html>
+(They are both pretty much the same, except the latter uses embedded
+javascript to configure CKEditor, while the former uses *ckedit.js*.
+
+The input JSON will be shown in an alert box before it is converted
+into HTML.  NOTE: this only happens *once*, so you have to kill the
+page rather than just reloading; subsequent reloads will use the
+converted value, not the original, causing a failure (why?)
+
+2. Click 'submit'.  This will invoke the *toDataFormat* method, which
+runs CKEditor's html parser using rules configured in *toDataFormat*.
+
+At present it only processes *h1* and *text* (and not correctly I'm
+afraid).  However, the parser is easy enough to configure, so it looks
+like getting the HTML to JSON to work will not be difficult.  Yay!
+
+
+# Saturday, November 17 2012  13:22 - pandoc to html and back
+
+## A little experiment:
+
+    % pandoc -s -t html README.pandoc > README.html
+    % pandoc -s -t markdown README.html > tmp.html
+
+The results are pretty good:
+
+- Tables appear to be translated back and forth exactly.
+- Links are inlined unlike the original, but that just makes the
+  markdown a little more difficult to read; not a problem for our
+  purposes.
+- Lists are fine.
+
+The following exceptions:
+
+
+- The title block loses author and date: the author gets rendered as a
+  2nd level heading, the date as a third level.
+- Footnotes don't apear to be translated correctly back to Markdown;
+  need to check what the html looks like.
+
+## Gitit Integration
+
+1. Create a new 'edit' tab for the CKEditor functionality; retain the
+existing tab as 'edit source' or 'edit raw'.
+2. Install CKEditor as the textarea, rather than the default.
+3. Convert markdown to html.
+4. Create an edited text handler that consumes html and converts back
+   to markdown.
+
+It remains to be seen if this works with LaTeX.
+
+## Test Harness
+
+~~~~~{.ditaa}
+
+ Browser               (server)     ckedit.cgi    echo.cgi
+ ---+---              ----+-----   -----+------  -----+----
+    | get(ckedit.html)    |             |             |
+    +-------------------->|             |             |
+    |   edit textarea     |             |             |
+    |<--------------------+             |             |
+    |                     |             |             |
+    | submit(value=html text)           |             |
+    +---------------------------------->|             |
+    |                     |             |             |
+    |   html text ckeditor|             |             |
+    |<----------------------------------+             |
+    |  		      	  |             |             |
+    | submit(value=edited page)         |             |
+    +------------------------------------------------>|
+    |  		 	  |             |             |
+    |   page as html/pandoc             |             |
+    |<------------------------------------------------+
+    |			  |             |             |
+
+~~~~~
+
+1. *ckedit.html* just provides a way to submit text easily, simulating
+   gitit retrieving a page from the filestore.
+
+2. *backend/ckedit.cgi* inserts the submitted text into a textarea (as
+   html), which is then replaced by a *CKEditor* instance that renders
+   the html wysiwyg style.
+
+3. Clicking 'submit' sends the (edited) html to *echo.cgi* which
+   converts it to Markdown, then back to html using pandoc.  This
+   simulates an edit-save-show cycle.
+
+   Note: at present *echo.cgi* just converts to Markdown, so I can see
+   the conversion.

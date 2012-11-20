@@ -1,0 +1,19 @@
+**bold**
+
+__also bold__
+
+_italic_
+
+*also italic*
+
+~~strikeout~~
+
+*\*backslash escaped\**
+
+text^superscript^, as in 2^10^ is 1024.
+
+text~subscript~, as in H~2~O is water.
+
+Inline `verbatim text` rest of sentence.
+
+This `verbatim text`{.haskell} has a haskell class attribute.
