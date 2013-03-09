@@ -147,6 +147,27 @@ if (!PandocJSON) {
 	return result.length === 0 ? '' : result.join('');
     }
 
+    function linkHref(value) {
+	if (value[1].length > 0) {
+	    return 'href="' + value[0] + '#' + value[1] + '"';
+	} else {
+	    return 'href="' + value[0] + '"';
+	}
+    }
+
+    function imgSrcAlt(value) {
+	var src = ' src="' + value[0] + '"';
+	if (value[1].length > 0) {
+	    return src +  ' alt="' + value[1] +'"';
+	} else {
+	    return src;
+	}
+    }
+
+    function imgTitle(value) {
+	return ' title="' + toHTML(value) + '"';
+    }
+
     function kvToHTML(key, value) {
 
 	switch (key) {
@@ -191,6 +212,14 @@ if (!PandocJSON) {
 	    return '<h' + level + '>' + toHTML(value[1]) + '</h' + level + '>';
 
 	case 'Table' : return '<table>' + tableToHTML(value) + '</table>';
+	case 'Link' : 
+	    // Link value is a two element array: [text, [url, title]]
+	    return '<a ' + linkHref(value[1]) + '>' + toHTML(value[0]) + '</a>';
+
+	case 'Image' : 
+	    // Like a link, but with image tag instead.
+	    return '<img' + imgTitle(value[0]) + imgSrcAlt(value[1]) + '/>';
+	    
 	default: 
 	    //console.warn('kvToHTML: key is ' + key);
 	    return toHTML(value);
