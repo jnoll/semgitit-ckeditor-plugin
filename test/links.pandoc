@@ -4,3 +4,7 @@
  
 This is an [inline link](/url), and here's [one with
 a title](http://fsf.org "click here for a good time!").
+
+This is an ![image link](/path/to/img.jpg).
+
+This is an ![image link with alt text](/path/to/img.jpg "The Image Title").
