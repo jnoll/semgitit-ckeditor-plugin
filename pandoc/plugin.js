@@ -38,6 +38,7 @@ CKEDITOR.pandocDataProcessor.prototype = {
 	return data;
     },
 
+    // Convert editor's HTML to JSON.
     // This was just copied from htmlDataProcessor.
     toDataFormat : function( html, fixForBody ) {
 	var parser = new CKEDITOR.htmlParser();
@@ -46,6 +47,7 @@ CKEDITOR.pandocDataProcessor.prototype = {
 	var blocks = [], num_els = [], block_level = -1;
 	var in_paraish = [];	// is current block paragraph-like?
 	var in_array = [];
+	var alist = []
 
 	newBlock = function(bracket, is_paraish, array) {
 	    incrEls()
@@ -102,7 +104,7 @@ CKEDITOR.pandocDataProcessor.prototype = {
 
 	mkHeader = function(level) {
 	    newObject('Header', true);
-	    newArray();
+	    newArray([]);
 	    addElement(level);
 	    newArray();
 	};
@@ -112,6 +114,11 @@ CKEDITOR.pandocDataProcessor.prototype = {
 	    return '"' + text.replace(/(\r\n|\n|\r)/gm, '\\n') + '"';
 	}
 
+
+	getAttribute = function (attr_name) { 
+	    return alist[alist.length - 1][attr_name]; 
+	};
+
 	parser.onTagOpen = function(tag, attributes, selfClosing) {
 	    switch (tag) {
 	    case 'h1': mkHeader(1); break;
@@ -120,24 +127,111 @@ CKEDITOR.pandocDataProcessor.prototype = {
 	    case 'h4': mkHeader(4); break;
 	    case 'h5': mkHeader(5); break;
 	    case 'p':
-	    newObject('Para', true);
+	    newObject('Para',  true);
+	    alist.push(attributes);
 	    newArray();
+	    break;
+	    case 'i':
+	    case 'em':
+	    newObject('Emph', false);
+	    alist.push(attributes);
+	    newArray();
+	    break;
+	    case 'b':
+	    case 'strong':
+	    newObject('Strong', false);
+	    alist.push(attributes)
+	    newArray();
+	    break;
+	    case 'ol':
+	    newObject('OrderedList', true);
+	    alist.push(attributes);
+	    newArray(); 	// list contents.
+	    newArray();	           // list attributes XXX can editor specify these
+	    addElement(1);	   // start number
+	    addElement(stringify("DefaultStyle")); // numbering hierarchy
+	    addElement(stringify("DefaultDelim"));  // separator
+	    endArray();
+	    newArray();		// list items;
+	    break;
+	    case 'ul':
+	    newObject('BulletList', true);
+	    alist.push(attributes);
+	    newArray();		// list items;
+	    break;
+	    case 'li':
+	    newArray();		
+	    newObject('Plain', false);
+	    newArray();		// item contents
+	    break;
+	    case 'a':
+	    newObject('Link', false);
+	    alist.push(attributes);
+	    newArray();
+	    newArray(); // for text between <a href="..."> and </a>
+	    break;
+	    case 'img':
+	    break;
+	    case 'table':
 	    break;
 	    default:
 	    break;
 	    }
 	};
 
-	parser.onTagClose = function(tag, attributes, selfClosing) {
+	parser.onTagClose = function(tag) {
 	    switch (tag) {
 	    case 'h1' : case 'h2': case 'h3': case 'h4': case 'h5':
 	    endArray();
 	    endArray();
 	    endObject(); 
+	    alist.pop();
 	    break;
 	    case 'p' : 
+	    case 'i':
+	    case 'em':
+    	    case 'b':
+	    case 'strong':
 	    endArray();
 	    endObject(); 
+	    alist.pop();
+	    break;
+	    case 'ol':
+	    endArray(); 	// list items
+	    endArray(); 	// list
+	    endObject(); 	// list object
+	    alist.pop();
+	    break;
+	    case 'ul':
+	    endArray(); 	// list items
+	    endObject();	// list object
+	    alist.pop();
+	    break;
+	    case 'li':
+	    endArray();		// Plain contents
+	    endObject(); 	// Plain 
+	    endArray(); 	// item contents
+	    break;
+	    case 'a': 
+	    endArray();
+	    newArray();		// for href.
+	    alert("href: " +  getAttribute('href'));
+	    href = getAttribute('href').split(/\#/);
+	    addElement(stringify(href[0]));
+	    if (href.length > 1) { // link title
+		addElement(stringify(decodeURI(href[1]))); 
+	    } else {
+		addElement(stringify("")); 
+	    }
+
+	    endArray();		// href+title
+	    endArray();		// link data
+	    endObject();	// Link
+	    alist.pop();
+	    break;
+	    case 'img':
+	    break;
+	    case 'table':
 	    break;
 	    default:
 	    break;

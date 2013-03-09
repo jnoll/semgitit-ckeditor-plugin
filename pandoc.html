@@ -38,12 +38,375 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	  </p>
 	</noscript>
       </div>
-      <form action="../../haskell-cgi/cgi-bin/echo.cgi" method="post">
+      <form action="http://localhost/~jnoll/test/cgi-bin/pandoc.cgi" method="post">
 	<p>
 	  <label for="value">
 	    Editor 1:</label>
 	  <textarea cols="80" id="editor" name="value" rows="120">
-[{"docTitle":[],"docAuthors":[],"docDate":[]},[{"Para":[{"Str":"A"},"Space",{"Str":"string"}]}]]
+[
+  {
+    "docAuthors": [], 
+    "docDate": [], 
+    "docTitle": []
+  }, 
+  [
+    {
+      "Header": [
+        1, 
+        [
+          {
+            "Str": "Header"
+          }, 
+          "Space", 
+          {
+            "Str": "1"
+          }, 
+          "Space", 
+          {
+            "Str": "-"
+          }, 
+          "Space", 
+          {
+            "Str": "inline"
+          }, 
+          "Space", 
+          {
+            "Str": "markup"
+          }
+        ]
+      ]
+    }, 
+    {
+      "Para": [
+        {
+          "Str": "An"
+        }, 
+        "Space", 
+        {
+          "Emph": [
+            {
+              "Str": "emphasized"
+            }
+          ]
+        }, 
+        "Space", 
+        {
+          "Strong": [
+            {
+              "Str": "bold"
+            }
+          ]
+        }, 
+        "Space", 
+        {
+          "Str": "plain"
+        }, 
+        "Space", 
+        {
+          "Str": "string"
+        }, 
+        {
+          "Str": "."
+        }
+      ]
+    }, 
+    {
+      "Header": [
+        2, 
+        [
+          {
+            "Str": "Header"
+          }, 
+          "Space", 
+          {
+            "Str": "2"
+          }, 
+          "Space", 
+          {
+            "Str": "-"
+          }, 
+          "Space", 
+          {
+            "Str": "links"
+          }
+        ]
+      ]
+    }, 
+    {
+      "Para": [
+        {
+          "Link": [
+            [
+              {
+                "Str": "A"
+              }, 
+              "Space", 
+              {
+                "Str": "link"
+              }
+            ], 
+            [
+              "http://server.com/path/to/file.html", 
+              ""
+            ]
+          ]
+        }
+      ]
+    }, 
+    {
+      "Para": [
+        {
+          "Link": [
+            [
+              {
+                "Str": "A"
+              }, 
+              "Space", 
+              {
+                "Str": "link"
+              }, 
+              "Space", 
+              {
+                "Str": "with"
+              }, 
+              "Space", 
+              {
+                "Str": "title"
+              }
+            ], 
+            [
+              "http://server.com/path/to/file.html", 
+              "The Title"
+            ]
+          ]
+        }
+      ]
+    }, 
+    {
+      "Header": [
+        3, 
+        [
+          {
+            "Str": "Header"
+          }, 
+          "Space", 
+          {
+            "Str": "3"
+          }, 
+          "Space", 
+          {
+            "Str": "-"
+          }, 
+          "Space", 
+          {
+            "Str": "images"
+          }
+        ]
+      ]
+    }, 
+    {
+      "Para": [
+        {
+          "Image": [
+            [
+              {
+                "Str": "An"
+              }, 
+              "Space", 
+              {
+                "Str": "image"
+              }
+            ], 
+            [
+              "http://server.com/path/to/file.img", 
+              "Alt Text"
+            ]
+          ]
+        }
+      ]
+    }, 
+    {
+      "Header": [
+        4, 
+        [
+          {
+            "Str": "Header"
+          }, 
+          "Space", 
+          {
+            "Str": "4"
+          }, 
+          "Space", 
+          {
+            "Str": "-"
+          }, 
+          "Space", 
+          {
+            "Str": "lists"
+          }
+        ]
+      ]
+    }, 
+    {
+      "OrderedList": [
+        [
+          1, 
+          "DefaultStyle", 
+          "DefaultDelim"
+        ], 
+        [
+          [
+            {
+              "Plain": [
+                {
+                  "Str": "OL"
+                }, 
+                "Space", 
+                {
+                  "Str": "first"
+                }
+              ]
+            }
+          ], 
+          [
+            {
+              "Plain": [
+                {
+                  "Str": "OL"
+                }, 
+                "Space", 
+                {
+                  "Str": "second"
+                }
+              ]
+            }
+          ], 
+          [
+            {
+              "Plain": [
+                {
+                  "Str": "OL"
+                }, 
+                "Space", 
+                {
+                  "Str": "third"
+                }
+              ]
+            }
+          ]
+        ]
+      ]
+    }, 
+    {
+      "BulletList": [
+        [
+          {
+            "Plain": [
+              {
+                "Str": "UL"
+              }, 
+              "Space", 
+              {
+                "Str": "first"
+              }
+            ]
+          }
+        ], 
+        [
+          {
+            "Plain": [
+              {
+                "Str": "UL"
+              }, 
+              "Space", 
+              {
+                "Str": "second"
+              }
+            ]
+          }
+        ], 
+        [
+          {
+            "Plain": [
+              {
+                "Str": "UL"
+              }, 
+              "Space", 
+              {
+                "Str": "third"
+              }
+            ]
+          }
+        ]
+      ]
+    }, 
+    {
+      "OrderedList": [
+        [
+          1, 
+          "Decimal", 
+          "Period"
+        ], 
+        [
+          [
+            {
+              "Plain": [
+                {
+                  "Str": "OL"
+                }, 
+                "Space", 
+                {
+                  "Str": "1"
+                }
+              ]
+            }
+          ], 
+          [
+            {
+              "Plain": [
+                {
+                  "Str": "OL"
+                }, 
+                "Space", 
+                {
+                  "Str": "2"
+                }
+              ]
+            }
+          ], 
+          [
+            {
+              "Plain": [
+                {
+                  "Str": "OL"
+                }, 
+                "Space", 
+                {
+                  "Str": "3"
+                }
+              ]
+            }
+          ]
+        ]
+      ]
+    }, 
+    {
+      "Header": [
+        5, 
+        [
+          {
+            "Str": "Header"
+          }, 
+          "Space", 
+          {
+            "Str": "5"
+          }
+        ]
+      ]
+    }
+  ]
+]
+
 	  </textarea>
 	  <script type="text/javascript">
 	    //<![CDATA[
@@ -53,6 +416,20 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		// editor configuration to fit Pandoc editing.
 		CKEDITOR.replace( 'editor', {
 			extraPlugins : 'pandoc',
+			// Remove unused plugins.
+			removePlugins : 'bidi,button,dialogadvtab,div,filebrowser,flash,forms,horizontalrule,iframe,indent,justify,liststyle,pagebreak,showborders,stylescombo,table,tabletools,templates',
+			// Width and height are not supported in the BBCode format, so object resizing is disabled.
+			disableObjectResizing : true,
+                        toolbar :
+				[
+                                        ['Format'],
+					['Source', '-', 'Save','NewPage','-','Undo','Redo'],
+					['Find','Replace','-','SelectAll','RemoveFormat'],
+					['Link', 'Unlink', 'Image'],
+					['Bold', 'Italic','Underline'],
+					['NumberedList','BulletedList','-','Blockquote'],
+					['Maximize']
+				],
                         on : {
                             instanceReady : function( ev ) {
                             // Output paragraphs as <p>Text</p>.
