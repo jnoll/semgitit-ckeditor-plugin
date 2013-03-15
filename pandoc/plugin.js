@@ -23,7 +23,7 @@ CKEDITOR.pandocDataProcessor = function( editor ) {
 
 CKEDITOR.pandocDataProcessor.prototype = {
     toHtml : function( data, fixForBody ) {
-	alert('toHtml' + data);
+	//alert('toHtml' + data);
 	var tmp = [], i = 0;
 	// This hack turns data into an object.  Pandoc converts a
 	// document into an array, while JSON.parse() expects an
@@ -47,7 +47,8 @@ CKEDITOR.pandocDataProcessor.prototype = {
 	var blocks = [], num_els = [], block_level = -1;
 	var in_paraish = [];	// is current block paragraph-like?
 	var in_array = [];
-	var alist = []
+	var alist = [];
+	var objects = [];
 
 	newBlock = function(bracket, is_paraish, array) {
 	    incrEls()
@@ -66,10 +67,12 @@ CKEDITOR.pandocDataProcessor.prototype = {
         newObject = function(name, is_paraish) {
 	    newBlock('{', is_paraish, false);
 	    data[i++] = stringify(name) + ':';
+	    objects.push(name);
 	}
 
 	endObject = function() {
 	    endBlock('}');
+	    objects.pop();
 	}
 
         newArray = function() {
@@ -87,6 +90,16 @@ CKEDITOR.pandocDataProcessor.prototype = {
 	inParaish = function() {
 	    return in_paraish[block_level];
 	};
+
+	needsPlain = function() {
+	    return (objects[objects.length-1] == 'OrderedList'
+		    || objects[objects.length-1] == 'BulletList'
+		    || objects[objects.length-1] == 'DefinitionList')
+	}
+
+	inPlain = function() {
+	    return (objects[objects.length-1] == 'Plain' )
+	}
 
         incrEls = function() {
 	    //alert('incrEls: inArray=' + inArray() + ' num_els=' + num_els[block_level]);
@@ -113,7 +126,6 @@ CKEDITOR.pandocDataProcessor.prototype = {
 	    // JSON doesn't like real newlines, so convert to '\n'.
 	    return '"' + text.replace(/(\r\n|\n|\r)/gm, '\\n') + '"';
 	}
-
 
 	getAttribute = function (attr_name) { 
 	    return alist[alist.length - 1][attr_name]; 
@@ -143,6 +155,7 @@ CKEDITOR.pandocDataProcessor.prototype = {
 	    alist.push(attributes)
 	    newArray();
 	    break;
+
 	    case 'ol':
 	    newObject('OrderedList', true);
 	    alist.push(attributes);
@@ -161,8 +174,6 @@ CKEDITOR.pandocDataProcessor.prototype = {
 	    break;
 	    case 'li':
 	    newArray();		
-	    newObject('Plain', false);
-	    newArray();		// item contents
 	    break;
 	    case 'a':
 	    newObject('Link', false);
@@ -208,14 +219,12 @@ CKEDITOR.pandocDataProcessor.prototype = {
 	    alist.pop();
 	    break;
 	    case 'li':
-	    endArray();		// Plain contents
-	    endObject(); 	// Plain 
 	    endArray(); 	// item contents
 	    break;
 	    case 'a': 
 	    endArray();
 	    newArray();		// for href.
-	    alert("href: " +  getAttribute('href'));
+	    //alert("href: " +  getAttribute('href'));
 	    href = getAttribute('href').split(/\#/);
 	    addElement(stringify(href[0]));
 	    if (href.length > 1) { // link title
@@ -245,12 +254,19 @@ CKEDITOR.pandocDataProcessor.prototype = {
 		newObject('Para', true);
 		newArray();
 		close_para = true;
+	    } else if (needsPlain()) {
+		newObject('Plain', false);
+		newArray();
 	    }
 
 	    newObject('Str', false);
 	    addElement(stringify(text));
 	    endObject();
 
+	    if (inPlain()) {
+		endArray();
+		endObject();
+	    }
 	    if (close_para) {
 		endArray();
 		endObject()
@@ -279,7 +295,7 @@ CKEDITOR.pandocDataProcessor.prototype = {
 	endArray();		// doc
 
 	result = data.length === 0 ? '' : data.join('');
-	alert('toDataFormat: ' + result);
+	//alert('toDataFormat: ' + result);
 	return result;
     }
 
