@@ -42,13 +42,18 @@ CKEDITOR.pandocDataProcessor.prototype = {
     // This was just copied from htmlDataProcessor.
     toDataFormat : function( html, fixForBody ) {
 	var parser = new CKEDITOR.htmlParser();
-	var data = [], i = 0;
+	var data = [], i = 0;	// lines of output data.
 	// Stack of blocks.  Each block is an object with an array of elements.
-	var blocks = [], num_els = [], block_level = -1;
+	var blocks = [], 	// 
+	num_els = [], 		// count of elements in current array, to add ',' when needed.
+	block_level = -1;	// stack pointer.
 	var in_paraish = [];	// is current block paragraph-like?
-	var in_array = [];
-	var alist = [];
-	var objects = [];
+	var in_array = [];	// is current block an array?
+	var alist = [];		// attributes of current object.
+	var objects = [];	// stack of object names XXX s.b. objects constituting stack frame:
+	// (type={array, object}, tag, alist, data specific to object type)
+	// Then, inParaish() becomes a search backwards for specific paraish objects,
+	// inArray just looks at TOS, data associated with tables can be push onto stack.
 
 	newBlock = function(bracket, is_paraish, array) {
 	    incrEls()
@@ -94,13 +99,16 @@ CKEDITOR.pandocDataProcessor.prototype = {
 	needsPlain = function() {
 	    return (objects[objects.length-1] == 'OrderedList'
 		    || objects[objects.length-1] == 'BulletList'
-		    || objects[objects.length-1] == 'DefinitionList')
+		    || objects[objects.length-1] == 'DefinitionList'
+		    || objects[objects.length-1] == 'Table'
+		    )
 	}
 
 	inPlain = function() {
 	    return (objects[objects.length-1] == 'Plain' )
 	}
 
+	// Put a comma after the last element.
         incrEls = function() {
 	    //alert('incrEls: inArray=' + inArray() + ' num_els=' + num_els[block_level]);
 	    if (inArray() && num_els[block_level] > 0) {
@@ -179,13 +187,55 @@ CKEDITOR.pandocDataProcessor.prototype = {
 	    newObject('Link', false);
 	    alist.push(attributes);
 	    newArray();
-	    newArray(); // for text between <a href="..."> and </a>
+	    newArray();	   // for text between <a href="..."> and </a>
 	    break;
 	    case 'img':
 	    break;
 	    case 'table':
+	    newObject('Table', true); // XXX is a table paraish?
+	    newArray();		      // Table elements.
+
+	    newArray();		      // caption
+	    newObject('Str');
+	    addElement(stringify("Caption"));
+	    endObject();
+	    endArray();
+
+	    newArray();		// header
+	    addElement(stringify("AlignRight"));
+	    addElement(stringify("AlignLeft"));
+	    addElement(stringify("AlignCenter"));
+	    addElement(stringify("AlignDefault"));
+	    endArray();
+
+	    newArray();		// ?
+	    addElement(0);
+	    addElement(0);
+	    addElement(0);
+	    addElement(0);
+	    endArray();
+
+	    // Rows don't get their own array.
 	    break;
+	    case 'caption':
+	    //	    newArray(); 	// caption.
+	    break;
+	    case 'thead':
+	    // The table head doesn't get special treatment: it's just the first row.
+	    break;
+	    case 'tbody':
+	    newArray();		// the body gets its own array.
+	    break;
+	    case 'tr':
+	    newArray();
+	    break;
+	    case 'th':		// XXX s.b. separately handled.
+	    case 'td':
+	    newArray();
+	    break;
+
 	    default:
+	    alert("I got: " + tag);
 	    break;
 	    }
 	};
@@ -238,10 +288,38 @@ CKEDITOR.pandocDataProcessor.prototype = {
 	    endObject();	// Link
 	    alist.pop();
 	    break;
+
 	    case 'img':
 	    break;
+
 	    case 'table':
+	    endArray();		// elements
+	    endObject();
 	    break;
+
+	    case 'caption':
+	    //endArray();		// XXX caption.
+	    break;
+
+	    case 'thead':
+	    //endArray();		// header alignment
+	    //newArray(); 	// not sure
+	    //endArray();		// XXX 
+	    break;
+
+	    case 'tbody':
+	    endArray();
+	    break;
+
+	    case 'tr':
+	    endArray();
+	    break;
+
+	    case 'th':
+	    case 'td':
+	    endArray();
+	    break;
+
 	    default:
 	    break;
 	    }

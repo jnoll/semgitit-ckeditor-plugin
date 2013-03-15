@@ -228,5 +228,5 @@ if (!PandocJSON) {
 
 })(PandocJSON);
 
-module.exports = PandocJSON;
+//module.exports = PandocJSON;
 
