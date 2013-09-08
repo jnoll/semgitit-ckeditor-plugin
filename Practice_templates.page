@@ -1,0 +1,100 @@
+~~~~~ { .edit-template}
+<div class="sg-edit">
+  <div class="sg-edit-metadata">
+    <fieldset class="sg-edit-metadata">
+      <legend>Meta-data</legend>
+      <input class="sg-meta" type="hidden" name="meta_format" value="$format$"></input>
+      <label><b>Type: </b></label>
+      <input class="sg-meta" type="text" maxlength="128" size="32" name="meta_type" value="$type$" READONLY></input>
+      <label><b>Title: </b></label>
+      <input class="sg-meta" type="text" maxlength="128" size="32" name="meta_title" value="$title$"></input>
+      <label><b>Lifecycle phase: </b></label>
+      <select name="meta_lifecyclePhase">
+	$option(val="Requirements"; isset=meta_lifecyclePhase_is_Requirements; name="Requirements")$
+	$option(val="Architecture"; isset=meta_lifecyclePhase_is_Architecture; name="Architecture&amp;Design")$
+	$option(val="Implementation"; isset=meta_lifecyclePhase_is_Implementation; name="Coding&amp;Implementation")$
+	$option(val="Testing"; isset=meta_lifecyclePhase_is_Testing; name="Testing&amp;QA")$
+	$option(val="Deployment"; isset=meta_lifecyclePhase_is_Deployment; name="Deployment")$
+	$option(val="Maintenance"; isset=meta_lifecyclePhase_is_Maintenance; name="Maintenance")$
+	$option(val="All"; isset=meta_lifecyclePhase_is_All; name="All")$
+	$option(val="NA"; isset=meta_lifecyclePhase_is_NA; name="Not Applicable")$
+      </select>
+
+      <label><b>Product domain: </b></label>
+      <select name="meta_domain">
+	$option(val="Medical"; isset=meta_domain_is_Medical; name="Medical/Health")$
+	$option(val="Finance"; isset=meta_domain_is_Finance; name="Financial Services")$
+	$option(val="Safety"; isset=meta_domain_is_Safety; name="Safety Critical")$
+	$option(val="Telecoms"; isset=meta_domain_is_Telecoms; name="Telecoms")$
+	$option(val="Automotive"; isset=meta_domain_is_Automotive; name="Automotive")$
+	$option(val="NA"; isset=meta_domain_is_NA; name="Not Applicable")$
+      </select>
+
+      <label><b>Intervention: </b></label>
+      <select name="meta_intervention">
+	$option(val="Infractructure"; isset=meta_intervention_is_Infrastructure; name="Infrastructure")$
+	$option(val="Management"; isset=meta_intervention_is_Management; name="Management")$
+	$option(val="Organization"; isset=meta_intervention_is_Organization; name="Organization")$
+	$option(val="Process"; isset=meta_intervention_is_Process; name="Process")$
+	$option(val="Standards"; isset=meta_intervention_is_Standards; name="Standards")$
+      </select>
+
+      <label><b>Research area: </b></label>
+      <select name="meta_researchArea">
+	$option(val="Agile"; isset=meta_researchArea_is_Agile; name="Agile")$
+	$option(val="Colocated"; isset=meta_researchArea_is_Colocated; name="Co-located")$
+	$option(val="GSD"; isset=meta_researchArea_is_GSD; name="Global Software Development")$
+	$option(val="InnerSource"; isset=meta_researchArea_is_InnerSource; name="Inner Source")$
+	$option(val="Lean"; isset=meta_researchArea_is_Lean; name="Lean")$
+	$option(val="MultiNationals"; isset=meta_researchArea_is_MultiNationals; name="Multi-Nationals")$
+	$option(val="OpenSource"; isset=meta_researchArea_is_OpenSource; name="Open Source")$
+	$option(val="PlanDriven"; isset=meta_researchArea_is_PlanDriven; name="Plan Driven")$
+	$option(val="SMEs"; isset=meta_researchArea_is_SMEs; name="SMEs")$
+	$option(val="VSEs"; isset=meta_researchArea_is_VSEs; name="Very Small Orgs")$
+	$option(val="Any"; isset=meta_researchArea_is_Any; name="Any")$
+      </select>
+
+      <label><b>Conditions: </b></label>
+      <input class="sg-meta" type="text" maxlength="128" size="32" name="meta_conditions" value="$conditions$"></input>
+      <input class="sg-meta" type="hidden" name="meta_rule" value="$rule$"></input>
+
+      <label><b>Summary: </b></label>
+      <input class="sg-meta" type="text" maxlength="128" size="32" name="meta_summary" value="$summary$"></inpupt>
+
+      <input class="sg-meta" type="hidden" name="meta_categories" value="$categories$"></input>
+      <input class="sg-meta" type="hidden" name="meta_role" value="$role$"></input
+      <input class="sg-meta" type="hidden" name="meta_tool" value="$tool$"></input
+      <input class="sg-meta" type="hidden" name="meta_requires" value="$requires$"></input
+      <input class="sg-meta" type="hidden" name="meta_provides" value="$provides$"></input
+      <input class="sg-meta" type="hidden" name="meta_risks" value="$risks$"></input
+      <input class="sg-meta" type="hidden" name="meta_result" value="$result$"></input
+      <input class="sg-meta" type="hidden" name="meta_publication" value="$publication$"></input
+    </fieldset>
+  </div>
+  <div class="sg-edit-contents">
+    <fieldset class="sg-edit-contents">
+      <legend>Contents</legend>
+      <label>CKEditor edit area from edit_Practice template</label>
+      <textarea cols="20" class="ckeditor" name="editedText" id="editedText">$contents$</textarea>
+      <label>(end edit area from template)</label>
+    </fieldset>
+  </div>
+</div>
+~~~~~
+
+View templates should be in Markdown.
+
+~~~~~ { .view-template}
+### Page Attributes
+
+ ------------ ------
+ Type         $type$
+ Intervention $intervention$
+ Phase        $lifecyclePhase$
+ Area         $researchArea$
+ ------------ ------
+
+#### Conditions   
+
+$conditions$
+~~~~~

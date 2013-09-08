@@ -8,18 +8,19 @@ CKEDITOR.editorConfig = function( config )
     // Define changes to default configuration here. For example:
     // config.language = 'fr';
     // config.uiColor = '#AADC6E';
-    config.extraPlugins = 'pandoc';
+    // XXX only for JSON i/o config.extraPlugins = 'pandoc';
     // Remove unused plugins.
-    config.removePlugins = 'bidi,button,dialogadvtab,div,filebrowser,flash,forms,horizontalrule,iframe,justify,liststyle,pagebreak,showborders,stylescombo,table,tabletools,templates';
+    config.removePlugins = 'bidi,button,dialogadvtab,div,filebrowser,flash,forms,horizontalrule,iframe,justify,liststyle,pagebreak,showborders,stylescombo,templates';
     // Width and height are not supported in the BBCode format, so object resizing is disabled.
     config.disableObjectResizing =  true;
     config.toolbar = [
 		      ['Format'],
 		      ['Source', '-', 'Save','NewPage','-','Undo','Redo'],
 		      ['Find','Replace','-','SelectAll','RemoveFormat'],
-		      ['Link', 'Unlink', 'Image'],
+		      ['Link', 'Unlink', 'Anchor', 'Image'],
 		      ['Bold', 'Italic','Underline'],
 		      ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote'],
+		      ['Table'],
 		      ['Maximize']
 		     ];
     config.on = {instanceReady : function( ev ) {
